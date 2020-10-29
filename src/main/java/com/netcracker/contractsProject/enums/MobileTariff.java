@@ -38,27 +38,27 @@ public enum MobileTariff {
     }
 
     /**
-     * get the number of minutes
+     * gets the number of minutes
      *
-     * @return the number of minutes
+     * @return {@link #numberOfMinutes}
      */
     public int getNumberOfMinutes() {
         return numberOfMinutes;
     }
 
     /**
-     * get the number of sms
+     * gets the number of sms
      *
-     * @return the number of sms
+     * @return {@link #numberOfSms}
      */
     public int getNumberOfSms() {
         return numberOfSms;
     }
 
     /**
-     * get the amount of internet
+     * gets the amount of internet
      *
-     * @return the amount of internet
+     * @return {@link #amountOfInternet}
      */
     public int getAmountOfInternet() {
         return amountOfInternet;
