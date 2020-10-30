@@ -11,11 +11,11 @@ import java.util.Optional;
  */
 public class Repository<T extends BaseContract> implements IRepository<T> {
     private final int startSize = 10;
-    private T[] elements;
+    private BaseContract[] elements;
     private int lastElemIndex;
 
     public Repository() {
-        elements = (T[]) new Object[startSize];
+        elements = new BaseContract[startSize];
         lastElemIndex = 0;
     }
 
@@ -42,9 +42,9 @@ public class Repository<T extends BaseContract> implements IRepository<T> {
      */
     @Override
     public Optional<T> get(int id) {
-        for (T el : elements) {
-            if (el.getId() == id) {
-                return Optional.of(el);
+        for (BaseContract el : elements) {
+            if (el != null && el.getId() == id) {
+                return Optional.of((T) el);
             }
         }
         return Optional.empty();
@@ -60,17 +60,25 @@ public class Repository<T extends BaseContract> implements IRepository<T> {
         for (int i = index; i < elements.length - 1; i++) {
             elements[i] = elements[i + 1];
         }
+        lastElemIndex--;
     }
 
     /**
      * increases the size of the {@link #elements}
      */
     private void increaseSize() {
-        T[] largerArr = (T[]) new Object[elements.length * 2];
+        BaseContract[] largerArr = new BaseContract[elements.length * 2];
         for (int i = 0; i < elements.length; i++) {
             largerArr[i] = elements[i];
         }
         elements = largerArr;
+    }
+
+    /**
+     * @return repository size
+     */
+    public int size() {
+        return lastElemIndex;
     }
 
 }

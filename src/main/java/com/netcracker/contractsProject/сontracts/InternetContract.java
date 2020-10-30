@@ -13,6 +13,9 @@ public class InternetContract extends BaseContract {
      */
     private double maxSpeed;
 
+    public InternetContract() {
+    }
+
     /**
      * @param id             contract id
      * @param startDate      a string representing the start date

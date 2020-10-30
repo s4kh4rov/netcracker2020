@@ -36,6 +36,9 @@ public class BaseContract {
      */
     private DateFormat dateFormat = new SimpleDateFormat("dd MM yyyy");
 
+    public BaseContract() {
+    }
+
     /**
      * BaseContract constructor with all fields as parameters
      *

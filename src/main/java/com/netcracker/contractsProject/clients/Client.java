@@ -18,6 +18,9 @@ public class Client {
     private int passportID;
     private DateFormat dateFormat = new SimpleDateFormat("dd MM yyyy");
 
+    public Client() {
+    }
+
     public Client(int id, String name, String surname, String patronymic, String dateOfBirth, Gender gender, int passportSeries, int passportID) throws ParseException {
         this.id = id;
         this.name = name;

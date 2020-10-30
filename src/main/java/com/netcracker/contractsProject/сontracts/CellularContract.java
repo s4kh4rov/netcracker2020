@@ -14,6 +14,10 @@ public class CellularContract extends BaseContract {
      */
     private MobileTariff tariff;
 
+    public CellularContract() {
+    }
+
+
     /**
      * @param id             contract id
      * @param startDate      a string representing the start date
@@ -29,6 +33,7 @@ public class CellularContract extends BaseContract {
 
     /**
      * gets cellular tariff
+     *
      * @return {@link #tariff}
      */
     public MobileTariff getTariff() {
@@ -37,6 +42,7 @@ public class CellularContract extends BaseContract {
 
     /**
      * sets cellular tariff
+     *
      * @param tariff {@link #tariff}
      */
     public void setTariff(MobileTariff tariff) {

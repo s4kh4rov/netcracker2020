@@ -14,6 +14,9 @@ public class TVContract extends BaseContract {
      */
     private ChannelPackage chPackage;
 
+    public TVContract() {
+    }
+
     /**
      * @param id             contract id
      * @param startDate      a string representing the start date
