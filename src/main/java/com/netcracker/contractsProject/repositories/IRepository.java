@@ -10,5 +10,5 @@ public interface IRepository<T> {
 
     public Optional<T> get(int id);
 
-    public void delete(int index);
+    public void delete(int id);
 }

@@ -51,16 +51,22 @@ public class Repository<T extends BaseContract> implements IRepository<T> {
     }
 
     /**
-     * removing an element from repository by its ordinal number in it
+     * removing an element from repository by contract id
      *
-     * @param index ordinal in the repository
+     * @param id contract id in the repository
      */
     @Override
-    public void delete(int index) {
-        for (int i = index; i < elements.length - 1; i++) {
-            elements[i] = elements[i + 1];
+    public void delete(int id) {
+        for (int i = 0; i < elements.length; i++) {
+            if (elements[i] != null && elements[i].getId() == id) {
+                for (int j = i; j < elements.length - 1; j++) {
+                    elements[j] = elements[j + 1];
+                }
+                lastElemIndex--;
+            }
+
         }
-        lastElemIndex--;
+
     }
 
     /**
