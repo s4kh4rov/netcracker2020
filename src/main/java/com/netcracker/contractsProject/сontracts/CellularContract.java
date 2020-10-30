@@ -3,7 +3,6 @@ package com.netcracker.contractsProject.сontracts;
 import com.netcracker.contractsProject.clients.Client;
 import com.netcracker.contractsProject.enums.MobileTariff;
 
-import java.text.ParseException;
 
 /**
  * The class represents a cellular contract
@@ -24,9 +23,8 @@ public class CellularContract extends BaseContract {
      * @param expirationDate a string representing the expiration date
      * @param client         client
      * @param tariff         represents one of the cellular tariffs from the MobileTariff enum
-     * @throws ParseException an exception if the input date format is incorrect
      */
-    public CellularContract(int id, String startDate, String expirationDate, Client client, MobileTariff tariff) throws ParseException {
+    public CellularContract(int id, String startDate, String expirationDate, Client client, MobileTariff tariff) {
         super(id, startDate, expirationDate, client);
         this.tariff = tariff;
     }

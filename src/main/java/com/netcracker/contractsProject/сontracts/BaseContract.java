@@ -2,10 +2,9 @@ package com.netcracker.contractsProject.сontracts;
 
 import com.netcracker.contractsProject.clients.Client;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 
 /**
  * The class represents a generic contract
@@ -19,12 +18,12 @@ public class BaseContract {
     /**
      * start date
      */
-    private Date startDate;
+    private LocalDate startDate;
 
     /**
      * contract expiration date
      */
-    private Date expirationDate;
+    private LocalDate expirationDate;
 
     /**
      * client with whom the contract was concluded
@@ -34,7 +33,7 @@ public class BaseContract {
     /**
      * the date format used in this class
      */
-    private DateFormat dateFormat = new SimpleDateFormat("dd MM yyyy");
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
     public BaseContract() {
     }
@@ -46,12 +45,11 @@ public class BaseContract {
      * @param startDate      a string representing the start date
      * @param expirationDate a string representing the expiration date
      * @param client         client
-     * @throws ParseException an exception if the input date format is incorrect
      */
-    public BaseContract(int id, String startDate, String expirationDate, Client client) throws ParseException {
+    public BaseContract(int id, String startDate, String expirationDate, Client client) {
         this.id = id;
-        this.startDate = dateFormat.parse(startDate);
-        this.expirationDate = dateFormat.parse(expirationDate);
+        this.startDate = LocalDate.parse(startDate, formatter);
+        this.expirationDate = LocalDate.parse(expirationDate, formatter);
         this.client = client;
     }
 
@@ -78,7 +76,7 @@ public class BaseContract {
      *
      * @return {@link #startDate}
      */
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
@@ -86,10 +84,9 @@ public class BaseContract {
      * sets start date from string
      *
      * @param startDate a string representing the start date
-     * @throws ParseException an exception if the input date format is incorrect
      */
-    public void setStartDate(String startDate) throws ParseException {
-        this.startDate = dateFormat.parse(startDate);
+    public void setStartDate(String startDate) {
+        this.startDate = LocalDate.parse(startDate, formatter);
     }
 
     /**
@@ -97,7 +94,7 @@ public class BaseContract {
      *
      * @return {@link #expirationDate}
      */
-    public Date getExpirationDate() {
+    public LocalDate getExpirationDate() {
         return expirationDate;
     }
 
@@ -105,10 +102,9 @@ public class BaseContract {
      * sets expiration date from string
      *
      * @param expirationDate a string representing the expiration date
-     * @throws ParseException an exception if the input date format is incorrect
      */
-    public void setExpirationDate(String expirationDate) throws ParseException {
-        this.expirationDate = dateFormat.parse(expirationDate);
+    public void setExpirationDate(String expirationDate) {
+        this.expirationDate = LocalDate.parse(expirationDate, formatter);
     }
 
     /**
@@ -135,8 +131,8 @@ public class BaseContract {
     @Override
     public String toString() {
         return "id=" + id +
-                ", startDate=" + dateFormat.format(startDate) +
-                ", expirationDate=" + dateFormat.format(expirationDate) +
+                ", startDate=" + startDate.format(formatter) +
+                ", expirationDate=" + expirationDate.format(formatter) +
                 ", client=" + client;
     }
 }

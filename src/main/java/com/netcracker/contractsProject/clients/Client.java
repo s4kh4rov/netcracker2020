@@ -2,31 +2,30 @@ package com.netcracker.contractsProject.clients;
 
 import com.netcracker.contractsProject.enums.Gender;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 
 public class Client {
     private int id;
     private String name;
     private String surname;
     private String patronymic;
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
     private Gender gender;
     private int passportSeries;
     private int passportID;
-    private DateFormat dateFormat = new SimpleDateFormat("dd MM yyyy");
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
     public Client() {
     }
 
-    public Client(int id, String name, String surname, String patronymic, String dateOfBirth, Gender gender, int passportSeries, int passportID) throws ParseException {
+    public Client(int id, String name, String surname, String patronymic, String dateOfBirth, Gender gender, int passportSeries, int passportID) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.patronymic = patronymic;
-        this.dateOfBirth = dateFormat.parse(dateOfBirth);
+        this.dateOfBirth = LocalDate.parse(dateOfBirth, formatter);
         this.gender = gender;
         this.passportSeries = passportSeries;
         this.passportID = passportID;
@@ -64,12 +63,12 @@ public class Client {
         this.patronymic = patronymic;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(String dateOfBirth) throws ParseException {
-        this.dateOfBirth = dateFormat.parse(dateOfBirth);
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = LocalDate.parse(dateOfBirth, formatter);
     }
 
     public Gender getGender() {
@@ -94,5 +93,9 @@ public class Client {
 
     public void setPassportID(int passportID) {
         this.passportID = passportID;
+    }
+
+    public int getAge() {
+        return Period.between(dateOfBirth, LocalDate.now()).getYears();
     }
 }

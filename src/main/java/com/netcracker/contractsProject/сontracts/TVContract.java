@@ -3,7 +3,6 @@ package com.netcracker.contractsProject.сontracts;
 import com.netcracker.contractsProject.enums.ChannelPackage;
 import com.netcracker.contractsProject.clients.Client;
 
-import java.text.ParseException;
 
 /**
  * The class represents a TV contract
@@ -23,9 +22,8 @@ public class TVContract extends BaseContract {
      * @param expirationDate a string representing the expiration date
      * @param client         client
      * @param chPackage      one of the channel package from the ChannelPackage enum
-     * @throws ParseException an exception if the input date format is incorrect
      */
-    public TVContract(int id, String startDate, String expirationDate, Client client, ChannelPackage chPackage) throws ParseException {
+    public TVContract(int id, String startDate, String expirationDate, Client client, ChannelPackage chPackage) {
         super(id, startDate, expirationDate, client);
         this.chPackage = chPackage;
     }
