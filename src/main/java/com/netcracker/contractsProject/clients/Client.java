@@ -20,6 +20,10 @@ public class Client {
     public Client() {
     }
 
+    public Client(String dateOfBirth) {
+        this.dateOfBirth = LocalDate.parse(dateOfBirth, formatter);
+    }
+
     public Client(int id, String name, String surname, String patronymic, String dateOfBirth, Gender gender, int passportSeries, int passportID) {
         this.id = id;
         this.name = name;
