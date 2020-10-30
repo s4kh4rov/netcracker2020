@@ -21,7 +21,7 @@ class RepositoryTest {
         TVContract tvContract = new TVContract(2, "02 03 2019", "02 03 2020", new Client(), ChannelPackage.BASE);
         repository.add(contract);
         repository.add(tvContract);
-        assertEquals(repository.size(),2);
+        assertEquals(repository.size(), 2);
     }
 
     @Test
@@ -36,8 +36,8 @@ class RepositoryTest {
         assertTrue(repository.get(1).isPresent());
         assertTrue(repository.get(2).isPresent());
 
-        assertEquals(contract,repository.get(1).get());
-        assertEquals(tvContract,repository.get(2).get());
+        assertEquals(contract, repository.get(1).get());
+        assertEquals(tvContract, repository.get(2).get());
     }
 
     @Test
@@ -50,7 +50,7 @@ class RepositoryTest {
         repository.delete(0);
 
         assertFalse(repository.get(1).isPresent());
-        assertEquals(repository.size(),1);
+        assertEquals(repository.size(), 1);
 
     }
 }
