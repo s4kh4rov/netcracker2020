@@ -3,6 +3,7 @@ package com.netcracker.contractsProject.repositories;
 import com.netcracker.contractsProject.сontracts.BaseContract;
 
 import java.util.Optional;
+import java.util.function.Predicate;
 
 /**
  * The class represents a repository for storing any classes that extends the BaseContract
@@ -67,6 +68,24 @@ public class Repository<T extends BaseContract> implements IRepository<T> {
 
         }
 
+    }
+
+    /**
+     * search in the repository by a specified  criterion
+     *
+     * @param condition repository search condition
+     * @return new repository with found contracts
+     */
+    @Override
+    public Repository<T> searchBy(Predicate<T> condition) {
+        Repository<T> repository = new Repository<>();
+        for (BaseContract elem : elements) {
+            if (elem != null && condition.test((T) elem)) {
+                repository.add((T) elem);
+            }
+
+        }
+        return repository;
     }
 
     /**

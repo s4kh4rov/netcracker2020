@@ -3,12 +3,16 @@ package com.netcracker.contractsProject.repositories;
 import com.netcracker.contractsProject.clients.Client;
 import com.netcracker.contractsProject.enums.ChannelPackage;
 import com.netcracker.contractsProject.enums.MobileTariff;
+import com.netcracker.contractsProject.repositories.search.SearchCriteria;
 import com.netcracker.contractsProject.сontracts.BaseContract;
 import com.netcracker.contractsProject.сontracts.CellularContract;
+import com.netcracker.contractsProject.сontracts.InternetContract;
 import com.netcracker.contractsProject.сontracts.TVContract;
 import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -52,5 +56,31 @@ class RepositoryTest {
         assertFalse(repository.get(1).isPresent());
         assertEquals(repository.size(), 1);
 
+    }
+
+    @Test
+    void searchBy() {
+        InternetContract ic = new InternetContract(1, "22.08.2000", "14.09.2025", new Client(), 78.9);
+        InternetContract ic1 = new InternetContract(2, "22.08.2000", "24.09.2020", new Client(), 78.9);
+        InternetContract ic2 = new InternetContract(3, "08.10.2007", "24.09.2020", new Client(), 88.5);
+        Repository<InternetContract> repository = new Repository<>();
+        repository.add(ic);
+        repository.add(ic1);
+        repository.add(ic2);
+        IRepository rep = repository.searchBy(SearchCriteria.bySpeed(78.9));
+
+        assertEquals(rep.size(), 2);
+        assertTrue(rep.get(1).isPresent());
+        assertTrue(rep.get(2).isPresent());
+
+        IRepository rep2 = repository.searchBy(SearchCriteria.byExpirationDate(LocalDate.parse("24.09.2020", DateTimeFormatter.ofPattern("dd.MM.yyyy"))));
+        assertEquals(rep2.size(), 2);
+        assertTrue(rep2.get(2).isPresent());
+        assertTrue(rep2.get(3).isPresent());
+
+        IRepository rep3 = repository.searchBy(SearchCriteria.byStartDate(LocalDate.parse("22.08.2000", DateTimeFormatter.ofPattern("dd.MM.yyyy"))));
+        assertEquals(rep3.size(), 2);
+        assertTrue(rep3.get(1).isPresent());
+        assertTrue(rep3.get(2).isPresent());
     }
 }
