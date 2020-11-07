@@ -1,7 +1,10 @@
 package com.netcracker.contractsProject.repositories;
 
+import com.netcracker.contractsProject.repositories.sort.BubbleSorter;
+import com.netcracker.contractsProject.repositories.sort.ISorter;
 import com.netcracker.contractsProject.сontracts.BaseContract;
 
+import java.util.Comparator;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -11,6 +14,8 @@ import java.util.function.Predicate;
  * @param <T> class type that extends BaseContract
  */
 public class Repository<T extends BaseContract> implements IRepository<T> {
+
+    private ISorter<T> sorter = new BubbleSorter<T>();
     private final int startSize = 10;
     private BaseContract[] elements;
     private int lastElemIndex;
@@ -42,13 +47,25 @@ public class Repository<T extends BaseContract> implements IRepository<T> {
      * else returns empty Optional
      */
     @Override
-    public Optional<T> get(int id) {
+    public Optional<T> getById(int id) {
         for (BaseContract el : elements) {
             if (el != null && el.getId() == id) {
                 return Optional.of((T) el);
             }
         }
         return Optional.empty();
+    }
+
+    /**
+     * receiving a contract from the repository by its serial number in it
+     *
+     * @param index serial number in the repository
+     * @return if the index is greater than the size of the array return empty optional else
+     * optional with found contract
+     */
+    @Override
+    public Optional<T> get(int index) {
+        return index >= lastElemIndex ? Optional.empty() : Optional.of((T) elements[index]);
     }
 
     /**
@@ -86,6 +103,11 @@ public class Repository<T extends BaseContract> implements IRepository<T> {
 
         }
         return repository;
+    }
+
+    @Override
+    public void sortBy(Comparator<T> comporator) {
+        sorter.sort(elements, comporator);
     }
 
     /**
