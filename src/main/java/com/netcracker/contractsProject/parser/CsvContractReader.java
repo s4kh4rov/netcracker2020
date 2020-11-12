@@ -16,13 +16,29 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
+
+/**
+ * Сlass for creating contracts based on csv file data
+ */
 public class CsvContractReader<T extends BaseContract> {
+
     CSVReader reader;
 
+    /**
+     * Constructor with parameter
+     * @param pathToCsvFile path to csv file
+     * @throws FileNotFoundException
+     */
     public CsvContractReader(String pathToCsvFile) throws FileNotFoundException {
         reader = new CSVReader(new FileReader(pathToCsvFile));
     }
 
+    /**
+     * creates a repository with contracts based on data from a csv file
+     * @return new repository with contracts
+     * @throws IOException
+     * @throws CsvValidationException
+     */
     public IRepository<T> createRepository() throws IOException, CsvValidationException {
         IRepository<T> repository = new Repository<>();
         String[] line;
@@ -56,10 +72,21 @@ public class CsvContractReader<T extends BaseContract> {
         return repository;
     }
 
+    /**
+     * method for creating a contract of type T
+     * @param function a function that creates a contract of type T from an array of objects
+     * @param data array with data necessary to create a contract
+     * @return new instance of class contract
+     */
     public T createContract(Function<Object[], T> function, Object[] data) {
         return function.apply(data);
     }
 
+    /**
+     * method for creating a client
+     * @param args an array of strings containing the data needed to fill the fields in the client class
+     * @return a new instance of the client class
+     */
     private Client createClient(String[] args) {
         int id = Integer.parseInt(args[0]);
         String name = args[1];

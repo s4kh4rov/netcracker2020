@@ -9,7 +9,14 @@ import com.netcracker.contractsProject.сontracts.TVContract;
 
 import java.util.function.Function;
 
+/**
+ *Class containing functions for creating different types of contracts
+ */
 public class Functions {
+
+    /**
+     * @return function for creating an internet contract
+     */
     public static Function<Object[], InternetContract> toInternetContract() {
         Function<Object[], InternetContract> f = objects -> {
             InternetContract internetContract = new InternetContract();
@@ -22,7 +29,9 @@ public class Functions {
         };
         return f;
     }
-
+    /**
+     * @return function for creating a tv contract
+     */
     public static Function<Object[], TVContract> toTvContract() {
         Function<Object[], TVContract> f = objects -> {
             TVContract tvContract = new TVContract();
@@ -35,7 +44,9 @@ public class Functions {
         };
         return f;
     }
-
+    /**
+     * @return function for creating a cellular contract
+     */
     public static Function<Object[], CellularContract> toCellularContract() {
         Function<Object[], CellularContract> f = objects -> {
             CellularContract cellularContract = new CellularContract();
