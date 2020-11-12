@@ -1,10 +1,13 @@
 package com.netcracker.contractsProject.clients;
 
 import com.netcracker.contractsProject.enums.Gender;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 public class Client {
     private int id;
@@ -101,5 +104,28 @@ public class Client {
 
     public int getAge() {
         return Period.between(dateOfBirth, LocalDate.now()).getYears();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(passportID)
+                .append(passportSeries)
+                .toHashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (obj == null || obj.getClass() != this.getClass()) {
+            return false;
+        }
+        Client c = (Client) obj;
+        return new EqualsBuilder()
+                .append(passportID, c.passportID)
+                .append(passportSeries, c.passportSeries)
+                .isEquals();
     }
 }
