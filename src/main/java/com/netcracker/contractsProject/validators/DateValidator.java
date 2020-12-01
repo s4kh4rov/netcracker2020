@@ -2,30 +2,18 @@ package com.netcracker.contractsProject.validators;
 
 import com.netcracker.contractsProject.сontracts.BaseContract;
 
-import java.util.List;
-
 /**
- * Base contract validator class
+ * Date validation class
  */
-public class BaseContractValidator {
-
-    /**
-     * Checks the contract according to all criteria
-     * @param contract contract for verification
-     * @return list with validation results
-     */
-    public static List<ValidationResult> checkContract(BaseContract contract) {
-        List<ValidationResult> result = ClientValidator.checkClient(contract.getClient());
-        result.add(checkDate(contract));
-        return result;
-    }
-
+public class DateValidator implements IValidator {
     /**
      * Сhecks start date and end date against criteria
+     *
      * @param contract contract for verification
-     * @return  object with the result of validation
+     * @return object with the result of validation
      */
-    public static ValidationResult checkDate(BaseContract contract) {
+    @Override
+    public ValidationResult validate(BaseContract contract) {
         ValidationResult result = new ValidationResult();
         if (contract.getExpirationDate().isBefore(contract.getStartDate())) {
             result.setStatus(CheckStatus.ERROR);
@@ -38,5 +26,4 @@ public class BaseContractValidator {
         }
         return result;
     }
-
 }

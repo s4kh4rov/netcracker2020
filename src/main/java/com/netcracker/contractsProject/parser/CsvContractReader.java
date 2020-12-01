@@ -6,9 +6,6 @@ import com.netcracker.contractsProject.repositories.IRepository;
 import com.netcracker.contractsProject.repositories.Repository;
 import com.netcracker.contractsProject.validators.*;
 import com.netcracker.contractsProject.сontracts.BaseContract;
-import com.netcracker.contractsProject.сontracts.CellularContract;
-import com.netcracker.contractsProject.сontracts.InternetContract;
-import com.netcracker.contractsProject.сontracts.TVContract;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import org.apache.log4j.Logger;
@@ -28,6 +25,12 @@ public class CsvContractReader<T extends BaseContract> {
 
     CSVReader reader;
     private static final Logger log = Logger.getLogger(CsvContractReader.class);
+    private static List<IValidator> validators = new ArrayList<>();
+    static {
+        validators.add(new DateOfBirthValidator());
+        validators.add(new DateValidator());
+        validators.add(new PassportDataValidator());
+    }
 
     /**
      * Constructor with parameter
@@ -64,23 +67,19 @@ public class CsvContractReader<T extends BaseContract> {
             }
             data[0] = client;
             System.arraycopy(line, 9, data, 1, data.length - 1);
-            List<ValidationResult> results = null;
             T contract = null;
             switch (line[0].toLowerCase().trim()) {
                 case "internetcontract":
                     contract = createContract((Function<Object[], T>) Functions.toInternetContract(), data);
-                    results = InternetContractValidator.checkContract((InternetContract) contract);
-
                     break;
                 case "tvcontract":
                     contract = createContract((Function<Object[], T>) Functions.toTvContract(), data);
-                    results = TVContractValidator.checkTVContract((TVContract) contract);
                     break;
                 case "cellularcontract":
                     contract = createContract((Function<Object[], T>) Functions.toCellularContract(), data);
-                    results = CellularContractValidator.checkCellularContract((CellularContract) contract);
                     break;
             }
+            List<ValidationResult> results = validation(contract);
             Set<CheckStatus> status = results.stream().map(r -> r.getStatus()).collect(Collectors.toSet());
             if (!status.contains(CheckStatus.ERROR)) {
                 repository.add(contract);
@@ -119,6 +118,15 @@ public class CsvContractReader<T extends BaseContract> {
         int passportID = Integer.parseInt(args[6]);
         int passportSeries = Integer.parseInt(args[7]);
         return new Client(id, name, surname, patronymic, dateOfBirth, gender, passportSeries, passportID);
+    }
+
+    /**
+     * checks the contract for compliance with all requirements
+     * @param contract contract for verification
+     * @return a list of objects that contain the results of validation
+     */
+    private List<ValidationResult> validation(T contract) {
+        return validators.stream().map(v->v.validate(contract)).collect(Collectors.toList());
     }
 
 
