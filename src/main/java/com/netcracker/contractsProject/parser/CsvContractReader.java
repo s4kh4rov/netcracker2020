@@ -4,17 +4,21 @@ import com.netcracker.contractsProject.clients.Client;
 import com.netcracker.contractsProject.enums.Gender;
 import com.netcracker.contractsProject.repositories.IRepository;
 import com.netcracker.contractsProject.repositories.Repository;
+import com.netcracker.contractsProject.validators.*;
 import com.netcracker.contractsProject.сontracts.BaseContract;
+import com.netcracker.contractsProject.сontracts.CellularContract;
+import com.netcracker.contractsProject.сontracts.InternetContract;
+import com.netcracker.contractsProject.сontracts.TVContract;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
+import org.apache.log4j.Logger;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 
 /**
@@ -23,9 +27,11 @@ import java.util.function.Function;
 public class CsvContractReader<T extends BaseContract> {
 
     CSVReader reader;
+    private static final Logger log = Logger.getLogger(CsvContractReader.class);
 
     /**
      * Constructor with parameter
+     *
      * @param pathToCsvFile path to csv file
      * @throws FileNotFoundException
      */
@@ -35,6 +41,7 @@ public class CsvContractReader<T extends BaseContract> {
 
     /**
      * creates a repository with contracts based on data from a csv file
+     *
      * @return new repository with contracts
      * @throws IOException
      * @throws CsvValidationException
@@ -45,6 +52,7 @@ public class CsvContractReader<T extends BaseContract> {
         Object[] data;
         List<Client> clients = new ArrayList<>();
         reader.skip(1);
+        log.info("Начало парсинга");
         while ((line = reader.readNext()) != null) {
             data = new Object[line.length - 8];
             Client client = createClient(Arrays.copyOfRange(line, 1, 9));
@@ -56,17 +64,29 @@ public class CsvContractReader<T extends BaseContract> {
             }
             data[0] = client;
             System.arraycopy(line, 9, data, 1, data.length - 1);
+            List<ValidationResult> results = null;
+            T contract = null;
             switch (line[0].toLowerCase().trim()) {
                 case "internetcontract":
-                    repository.add(createContract((Function<Object[], T>) Functions.toInternetContract(), data));
+                    contract = createContract((Function<Object[], T>) Functions.toInternetContract(), data);
+                    results = InternetContractValidator.checkContract((InternetContract) contract);
+
                     break;
                 case "tvcontract":
-                    repository.add(createContract((Function<Object[], T>) Functions.toTvContract(), data));
+                    contract = createContract((Function<Object[], T>) Functions.toTvContract(), data);
+                    results = TVContractValidator.checkTVContract((TVContract) contract);
                     break;
                 case "cellularcontract":
-                    repository.add(createContract((Function<Object[], T>) Functions.toCellularContract(), data));
+                    contract = createContract((Function<Object[], T>) Functions.toCellularContract(), data);
+                    results = CellularContractValidator.checkCellularContract((CellularContract) contract);
                     break;
             }
+            Set<CheckStatus> status = results.stream().map(r -> r.getStatus()).collect(Collectors.toSet());
+            if (!status.contains(CheckStatus.ERROR)) {
+                repository.add(contract);
+            }
+            log.info("Контракт с id " + contract.getId());
+            results.forEach(r -> log.info(r.getFieldName() + " " + r.getStatus() + " " + r.getMessage()));
         }
         reader.close();
         return repository;
@@ -74,8 +94,9 @@ public class CsvContractReader<T extends BaseContract> {
 
     /**
      * method for creating a contract of type T
+     *
      * @param function a function that creates a contract of type T from an array of objects
-     * @param data array with data necessary to create a contract
+     * @param data     array with data necessary to create a contract
      * @return new instance of class contract
      */
     public T createContract(Function<Object[], T> function, Object[] data) {
@@ -84,6 +105,7 @@ public class CsvContractReader<T extends BaseContract> {
 
     /**
      * method for creating a client
+     *
      * @param args an array of strings containing the data needed to fill the fields in the client class
      * @return a new instance of the client class
      */
@@ -94,8 +116,8 @@ public class CsvContractReader<T extends BaseContract> {
         String patronymic = args[3];
         String dateOfBirth = args[4];
         Gender gender = Gender.valueOf(args[5].toUpperCase());
-        int passportSeries = Integer.parseInt(args[6]);
-        int passportID = Integer.parseInt(args[7]);
+        int passportID = Integer.parseInt(args[6]);
+        int passportSeries = Integer.parseInt(args[7]);
         return new Client(id, name, surname, patronymic, dateOfBirth, gender, passportSeries, passportID);
     }
 
