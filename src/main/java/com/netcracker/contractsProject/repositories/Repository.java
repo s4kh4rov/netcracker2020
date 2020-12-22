@@ -1,5 +1,6 @@
 package com.netcracker.contractsProject.repositories;
 
+import com.netcracker.contractsProject.annotations.MyInject;
 import com.netcracker.contractsProject.repositories.sort.BubbleSorter;
 import com.netcracker.contractsProject.repositories.sort.ISorter;
 import com.netcracker.contractsProject.сontracts.BaseContract;
@@ -14,8 +15,8 @@ import java.util.function.Predicate;
  * @param <T> class type that extends BaseContract
  */
 public class Repository<T extends BaseContract> implements IRepository<T> {
-
-    private ISorter<T> sorter = new BubbleSorter<T>();
+    @MyInject(clazz = ISorter.class)
+    private ISorter<T> sorter;
     private final int startSize = 10;
     private BaseContract[] elements;
     private int lastElemIndex;

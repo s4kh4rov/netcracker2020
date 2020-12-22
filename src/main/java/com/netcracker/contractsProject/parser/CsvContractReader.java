@@ -1,5 +1,6 @@
 package com.netcracker.contractsProject.parser;
 
+import com.netcracker.contractsProject.annotations.MyInject;
 import com.netcracker.contractsProject.clients.Client;
 import com.netcracker.contractsProject.enums.Gender;
 import com.netcracker.contractsProject.repositories.IRepository;
@@ -25,12 +26,8 @@ public class CsvContractReader<T extends BaseContract> {
 
     CSVReader reader;
     private static final Logger log = Logger.getLogger(CsvContractReader.class);
-    private static List<IValidator> validators = new ArrayList<>();
-    static {
-        validators.add(new DateOfBirthValidator());
-        validators.add(new DateValidator());
-        validators.add(new PassportDataValidator());
-    }
+    @MyInject(clazz = IValidator.class)
+    private List<IValidator> validators;
 
     /**
      * Constructor with parameter
