@@ -24,8 +24,8 @@ import java.util.stream.Collectors;
  */
 public class CsvContractReader<T extends BaseContract> {
 
-    CSVReader reader;
-    private static final Logger log = Logger.getLogger(CsvContractReader.class);
+    private CSVReader reader;
+    private static final Logger LOGGER = Logger.getRootLogger();
     @MyInject(clazz = IValidator.class)
     private List<IValidator> validators;
 
@@ -52,7 +52,7 @@ public class CsvContractReader<T extends BaseContract> {
         Object[] data;
         List<Client> clients = new ArrayList<>();
         reader.skip(1);
-        log.info("Начало парсинга");
+        LOGGER.info("Начало парсинга");
         while ((line = reader.readNext()) != null) {
             data = new Object[line.length - 8];
             Client client = createClient(Arrays.copyOfRange(line, 1, 9));
@@ -81,8 +81,8 @@ public class CsvContractReader<T extends BaseContract> {
             if (!status.contains(CheckStatus.ERROR)) {
                 repository.add(contract);
             }
-            log.info("Контракт с id " + contract.getId());
-            results.forEach(r -> log.info(r.getFieldName() + " " + r.getStatus() + " " + r.getMessage()));
+            LOGGER.info("Контракт с id " + contract.getId());
+            results.forEach(r -> LOGGER.info(r.getFieldName() + " " + r.getStatus() + " " + r.getMessage()));
         }
         reader.close();
         return repository;

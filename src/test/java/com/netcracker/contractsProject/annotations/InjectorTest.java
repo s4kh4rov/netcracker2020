@@ -1,5 +1,6 @@
 package com.netcracker.contractsProject.annotations;
 
+import com.netcracker.contractsProject.exceptions.InjectException;
 import com.netcracker.contractsProject.parser.CsvContractReader;
 import com.netcracker.contractsProject.repositories.Repository;
 import com.netcracker.contractsProject.repositories.sort.ISorter;
@@ -10,6 +11,7 @@ import com.netcracker.contractsProject.сontracts.BaseContract;
 import com.opencsv.exceptions.CsvValidationException;
 import org.junit.jupiter.api.Test;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class InjectorTest {
 
     @Test
-    void inject() throws IllegalAccessException, IOException, InstantiationException, CsvValidationException{
+    void inject() throws InjectException, CsvValidationException, IOException {
         CsvContractReader csvContractReader = new CsvContractReader("C:\\Users\\User\\contracts.csv");
         Injector.inject(csvContractReader);
         Repository<BaseContract> repository = (Repository<BaseContract>) csvContractReader.createRepository();
