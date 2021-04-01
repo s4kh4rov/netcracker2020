@@ -17,7 +17,7 @@ public class Client {
     private Gender gender;
     private int passportSeries;
     private int passportID;
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public Client() {
     }

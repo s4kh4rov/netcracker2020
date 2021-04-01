@@ -8,7 +8,7 @@ class ClientTest {
 
     @Test
     void getAge() {
-        Client client = new Client("24.04.2000");
+        Client client = new Client("2000-04-24");
         assertEquals(client.getAge(), 20);
     }
 }

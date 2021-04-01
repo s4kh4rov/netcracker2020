@@ -33,7 +33,7 @@ public class BaseContract {
     /**
      * the date format used in this class
      */
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public BaseContract() {
     }

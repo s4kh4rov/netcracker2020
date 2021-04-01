@@ -14,10 +14,10 @@ class DateOfBirthValidatorTest {
         BaseContract contract = new BaseContract();
         Client client = new Client();
         contract.setClient(client);
-        client.setDateOfBirth("09.10.1978");
+        client.setDateOfBirth("1978-10-09");
         assertEquals(validator.validate(contract).getStatus(), CheckStatus.OK);
 
-        client.setDateOfBirth("10.12.1830");
+        client.setDateOfBirth("1830-12-10");
         assertEquals(validator.validate(contract).getStatus(), CheckStatus.WARNING);
     }
 }
