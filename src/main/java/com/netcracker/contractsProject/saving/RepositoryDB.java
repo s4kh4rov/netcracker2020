@@ -18,14 +18,29 @@ import java.util.Properties;
 
 import static java.sql.Types.NULL;
 
+/**
+ * A class that implements saving and restoring a repository in a database
+ */
 public class RepositoryDB implements Save, Restore {
+    /**
+     * Sql query to add a contract to the database
+     */
     private static final String INSERT_CONTRACT = "INSERT INTO CONTRACT (contract_id,start_date,expiration_date,tariff,max_speed,channel_package,client_id) VALUES(?,?,?,?,?,?,?) ON CONFLICT(contract_id) DO UPDATE SET start_date=excluded.start_date,expiration_date=excluded.expiration_date,tariff=excluded.tariff,max_speed=excluded.max_speed,channel_package=excluded.channel_package,client_id=excluded.client_id";
+    /**
+     * Sql query to add a client to the database
+     */
     private static final String INSERT_CLIENT = "INSERT INTO CLIENT (id,client_name,surname,patronymic,birth_date,gender,passport_series,passport_id) VALUES (?,?,?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET client_name=excluded.client_name,surname=excluded.surname,patronymic=excluded.patronymic,birth_date=excluded.birth_date,gender=excluded.gender,passport_series=excluded.passport_series,passport_id=excluded.passport_id";
+    /**
+     * Sql query to select a contract from the database
+     */
     private static final String SELECT_CONTRACT = "SELECT * FROM CONTRACT JOIN CLIENT ON CONTRACT.client_id = CLIENT.id";
     private String url;
     private String user;
     private String pass;
 
+    /**
+     * Constructor without parameters. It loads properties for connecting to the database.
+     */
     public RepositoryDB() {
         try (InputStream dbp = RepositoryDB.class.getClassLoader().getResourceAsStream("DBConnection.properties")) {
             Properties props = new Properties();
@@ -38,6 +53,11 @@ public class RepositoryDB implements Save, Restore {
         }
     }
 
+    /**
+     * Saves the repository to the database
+     *
+     * @param repository repository to save
+     */
     @Override
     public void save(IRepository repository) {
         try (Connection connection = DriverManager.getConnection(url, user, pass);
@@ -78,6 +98,11 @@ public class RepositoryDB implements Save, Restore {
         }
     }
 
+    /**
+     * Restores repository from database
+     *
+     * @return repository filled with contracts from the database
+     */
     @Override
     public IRepository restore() {
         IRepository repository = new Repository();
