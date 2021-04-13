@@ -1,23 +1,38 @@
 package com.netcracker.contractsProject.clients;
 
 import com.netcracker.contractsProject.enums.Gender;
+import com.netcracker.contractsProject.saving.adapter.LocalDateAdapter;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 
+@XmlRootElement(name = "client")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Client {
+    @XmlElement
     private int id;
+    @XmlElement
     private String name;
+    @XmlElement
     private String surname;
+    @XmlElement
     private String patronymic;
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     private LocalDate dateOfBirth;
+    @XmlElement
     private Gender gender;
+    @XmlElement
     private int passportSeries;
+    @XmlElement
     private int passportID;
+    @XmlTransient
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
 
     public Client() {
     }

@@ -3,8 +3,10 @@ package com.netcracker.contractsProject.repositories;
 import com.netcracker.contractsProject.annotations.MyInject;
 import com.netcracker.contractsProject.repositories.sort.BubbleSorter;
 import com.netcracker.contractsProject.repositories.sort.ISorter;
+import com.netcracker.contractsProject.repositories.sort.IncertionSorter;
 import com.netcracker.contractsProject.сontracts.BaseContract;
 
+import javax.xml.bind.annotation.*;
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -14,11 +16,21 @@ import java.util.function.Predicate;
  *
  * @param <T> class type that extends BaseContract
  */
+@XmlRootElement(name = "Repository")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Repository<T extends BaseContract> implements IRepository<T> {
     @MyInject(clazz = ISorter.class)
+    @XmlElements({
+            @XmlElement(type = BubbleSorter.class),
+            @XmlElement(type = IncertionSorter.class)
+    })
     private ISorter<T> sorter;
+    @XmlElement(name = "startSize")
     private final int startSize = 10;
+    @XmlElementWrapper(name = "contracts")
+    @XmlElement(name = "contract")
     private BaseContract[] elements;
+    @XmlElement(name = "lastElemIndex")
     private int lastElemIndex;
 
     public Repository() {

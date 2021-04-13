@@ -1,7 +1,9 @@
 package com.netcracker.contractsProject.сontracts;
 
 import com.netcracker.contractsProject.clients.Client;
+import com.netcracker.contractsProject.saving.adapter.BaseContractAdapter;
 
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -9,6 +11,7 @@ import java.time.format.DateTimeFormatter;
 /**
  * The class represents a generic contract
  */
+@XmlJavaTypeAdapter(BaseContractAdapter.class)
 public class BaseContract {
     /**
      * contract id
@@ -51,6 +54,7 @@ public class BaseContract {
         this.startDate = LocalDate.parse(startDate, formatter);
         this.expirationDate = LocalDate.parse(expirationDate, formatter);
         this.client = client;
+
     }
 
     /**
